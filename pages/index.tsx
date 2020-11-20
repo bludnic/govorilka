@@ -1,5 +1,5 @@
+import Button from '@material-ui/core/Button';
+
 export default function Home() {
-    return (
-        <div>Index Page</div>
-    )
+    return <Button>Index Page</Button>;
 }
