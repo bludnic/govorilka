@@ -26,3 +26,9 @@ yarn-error.log*
 
 # editors
 .idea
+
+#
+playground/*
+*.pdf
+
+.vercel

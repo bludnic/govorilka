@@ -1,0 +1,5 @@
+.next
+.vercel
+out
+node_modules
+public/pdfjs/worker.js
