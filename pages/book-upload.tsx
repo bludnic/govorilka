@@ -76,7 +76,12 @@ const BookUpload: NextPage<Props> = () => {
     };
 
     const openBook = (bookId: number) => {
-        router.push('/book/[id]', `/book/${bookId}`);
+        router.push({
+            pathname: '/book',
+            query: {
+                id: bookId,
+            },
+        });
     };
 
     return (
