@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import { NextPage } from 'next';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
@@ -42,7 +43,13 @@ const Index: NextPage<Props> = (props) => {
 
     return (
         <div className={classes.root}>
-            <List>
+            <List
+                subheader={
+                    <ListSubheader component="div">
+                        Books
+                    </ListSubheader>
+                }
+            >
                 {books.map((book) => (
                     <ListItem
                         onClick={() => openBook(book.id)}
