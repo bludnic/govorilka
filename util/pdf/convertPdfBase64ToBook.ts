@@ -1,4 +1,4 @@
-import {PDFDocumentProxy} from 'pdfjs-dist';
+import { PDFDocumentProxy } from 'pdfjs-dist';
 import { PDFBook, PDFPage } from 'types';
 import { convertDataURIToBinary, convertPageContentToText } from 'util/pdf';
 
@@ -34,6 +34,8 @@ export async function convertPdfBase64ToBook(base64: string): Promise<PDFBook> {
             (pagesPromises as unknown) as Promise<PDFPage>[],
         );
 
+        const date = new Date();
+
         return {
             title: 'Безымянная книга',
             numPages: pdfDocument.numPages,
@@ -41,6 +43,8 @@ export async function convertPdfBase64ToBook(base64: string): Promise<PDFBook> {
                 title: pdfMetatada.info.Title,
             },
             pages,
+            importedAt: date,
+            id: date.getTime(),
         };
     } catch (reason: any) {
         console.log('Reason', reason);

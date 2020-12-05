@@ -3,6 +3,10 @@ export type PDFBook = {
     numPages: number;
     pages: PDFPage[];
     metadata: PDFMetaData;
+    /** Дата импорта PDF файла **/
+    importedAt: Date;
+    /** Дата импорта в виде числа (timestamp) **/
+    id: number;
 };
 
 export type PDFPage = {

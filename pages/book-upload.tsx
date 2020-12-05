@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import { NextPage } from 'next';
 import { makeStyles } from '@material-ui/core/styles';
+import { useRouter } from 'next/router';
 
 import { BookDetails } from 'components/BookDetails';
 import { BookDetailsDialog } from 'components/BookDetailsDialog';
@@ -9,7 +10,7 @@ import { LoadingOverlay } from 'components/LoadingOverlay';
 import { PDFBook } from 'types';
 import { UploadPdf } from 'components/UploadPdf';
 import { convertPdfBase64ToBook } from 'util/pdf';
-import { saveBookToDB } from 'util/book/saveBookToDB';
+import { addBook } from 'util/indexedDB/books';
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -27,8 +28,9 @@ const useStyles = makeStyles(
 
 type Props = {};
 
-const BookUpload: NextPage<Props> = (props) => {
+const BookUpload: NextPage<Props> = () => {
     const classes = useStyles();
+    const router = useRouter();
     const [book, setBook] = useState<PDFBook | null>(null);
     const [bookDetailsDialog, setBookDetailsDialog] = useState(false);
     const [isConverting, setConverting] = useState(false);
@@ -54,15 +56,14 @@ const BookUpload: NextPage<Props> = (props) => {
         if (book) {
             const newBook = {
                 ...book,
-                metadata: {
-                    ...book.metadata,
-                    title: bookTitle,
-                },
+                title: bookTitle,
             };
 
             setBook(newBook);
 
-            saveBookToDB(newBook);
+            addBook(newBook).then(() => {
+                openBook(newBook.id);
+            });
         }
     };
 
@@ -70,8 +71,12 @@ const BookUpload: NextPage<Props> = (props) => {
         setBookDetailsDialog(false);
 
         if (book) {
-            saveBookToDB(book);
+            addBook(book);
         }
+    };
+
+    const openBook = (bookId: number) => {
+        router.push('/book/[id]', `/book/${bookId}`);
     };
 
     return (
