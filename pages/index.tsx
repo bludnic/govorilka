@@ -1,217 +1,69 @@
-import React, { KeyboardEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import BookIcon from '@material-ui/icons/Book';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { NextPage } from 'next';
-import { TextField } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
+import { useRouter } from 'next/router';
 
-import { VoicesCombobox } from 'components/VoicesCombobox';
-import apiClient, { SsmlVoiceGender, Voice } from 'util/apiClient';
-import { downloadMp3 } from 'util/downloadMp3';
-import { MenuPropsBottom } from 'util/mui';
+import { PDFBook } from 'types';
+import { getAllBooks } from 'util/indexedDB/books';
 
 const useStyles = makeStyles(
-    (theme: Theme) => ({
+    () => ({
         /* Styles applied to the root element. */
-        root: {
-            backgroundColor: '#fff',
-        },
-        container: {
-            maxWidth: 880,
-            padding: theme.spacing(4),
-        },
-        spacer: {
-            flewGrow: 1,
-        },
-        formControl: {
-            minWidth: 120,
-        },
+        root: {},
     }),
     { name: 'Index' },
 );
 
 type Props = {};
 
-const defaultVoice: Voice = {
-    languageCodes: ['ru-RU'],
-    name: 'ru-RU-Wavenet-D',
-    ssmlGender: SsmlVoiceGender.MALE,
-    naturalSampleRateHertz: 24000,
-};
-
-const Index: NextPage<Props> = () => {
+const Index: NextPage<Props> = (props) => {
     const classes = useStyles();
+    const router = useRouter();
 
-    const [loading, setLoading] = useState(false);
-
-    const [voices, setVoices] = useState<Voice[]>([]);
-
-    const [text, setText] = useState('');
-    const [voice, setVoice] = useState<Voice | null>(defaultVoice);
-    const [voiceGender, setVoiceGender] = useState<SsmlVoiceGender>(
-        SsmlVoiceGender.MALE,
-    );
-    const [speakingRate, setSpeakingRate] = useState<number | ''>(1.0);
-    const [filename, setFilename] = useState('');
+    const [books, setBooks] = useState<PDFBook[]>([]);
 
     useEffect(() => {
-        async function fetchVoices() {
-            try {
-                const { data } = await apiClient.voices();
-                setVoices(data.voices);
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        fetchVoices();
+        getAllBooks().then((books) => setBooks(books));
     }, []);
 
-    const handleDownload = () => {
-        async function synthesize() {
-            if (!voice) {
-                console.error('No voice selected');
-                return;
-            }
-
-            setLoading(true);
-
-            try {
-                const { data } = await apiClient.textSynthesize(
-                    text,
-                    voice.languageCodes[0],
-                    voice.name,
-                    voiceGender || voice.ssmlGender,
-                    speakingRate || 1,
-                );
-
-                downloadMp3(data.audioContent, filename);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        synthesize();
-    };
-
-    const handleKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === 'Enter') {
-            if (text) handleDownload();
-        }
+    const openBook = (bookId: number) => {
+        router.push({
+            pathname: '/book',
+            query: {
+                id: bookId,
+            },
+        });
     };
 
     return (
         <div className={classes.root}>
-            <Container className={classes.container}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={4}>
-                        <VoicesCombobox
-                            value={voice}
-                            onChange={setVoice}
-                            voices={voices}
+            <List>
+                {books.map((book) => (
+                    <ListItem
+                        onClick={() => openBook(book.id)}
+                        key={book.id}
+                        button
+                    >
+                        <ListItemText
+                            primary={book.title}
+                            secondary={book.id}
                         />
-                    </Grid>
+                    </ListItem>
+                ))}{' '}
+            </List>
 
-                    <Grid item xs={12} md={4}>
-                        <FormControl
-                            variant="outlined"
-                            fullWidth
-                            className={classes.formControl}
-                        >
-                            <InputLabel id="gender-label">
-                                Voice gender
-                            </InputLabel>
-                            <Select
-                                labelId="gender-label"
-                                id="gender"
-                                value={voiceGender}
-                                onChange={(e) =>
-                                    setVoiceGender(
-                                        e.target.value as SsmlVoiceGender,
-                                    )
-                                }
-                                label="Voice gender"
-                                MenuProps={MenuPropsBottom}
-                            >
-                                {Object.keys(SsmlVoiceGender).map((gender) => (
-                                    <MenuItem key={gender} value={gender}>
-                                        {gender}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                        <TextField
-                            label="Speaking rate"
-                            fullWidth
-                            variant="outlined"
-                            type="number"
-                            value={speakingRate}
-                            onChange={(e) => {
-                                setSpeakingRate(
-                                    e.target.value === ''
-                                        ? ''
-                                        : Number(e.target.value),
-                                );
-                            }}
-                            InputProps={{
-                                inputProps: {
-                                    min: 0.25,
-                                    max: 4,
-                                },
-                            }}
-                            required
-                            helperText="Speaking rate/speed, in the range [0.25, 4.0]"
-                        />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <TextField
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            multiline
-                            fullWidth
-                            rows={16}
-                            variant="outlined"
-                        />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <TextField
-                            value={filename}
-                            onChange={(e) => setFilename(e.target.value)}
-                            placeholder="File name"
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            onKeyPress={handleKeyPress}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button
-                            disabled={!voice || !text || loading}
-                            onClick={handleDownload}
-                            startIcon={<GetAppIcon />}
-                            endIcon={
-                                loading ? <CircularProgress size={18} /> : null
-                            }
-                        >
-                            MP3
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Container>
+            <Button
+                onClick={() => router.push('/book-upload')}
+                startIcon={<BookIcon />}
+                fullWidth
+            >
+                Upload Book
+            </Button>
         </div>
     );
 };
