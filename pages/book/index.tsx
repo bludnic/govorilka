@@ -89,6 +89,20 @@ const Book: NextPage<Props> = (props) => {
 
             setLoadingSynthesize(true);
 
+            // На первых страницах книг не всегда есть текст.
+            // Часто это просто обложка. Скипаем это страницу
+            // чтобы Autoplay работал как надо.
+            if (page.textContent === '') {
+                console.warn(
+                    `[synthesize] Skipping the page ${page.pageNum}` +
+                        'because of empty `page.textContent`. Perhaps this is the cover of the page, ' +
+                        'which does not contain text, or pdf.js did not parse the text correctly.',
+                );
+                handleAudioEnd();
+
+                return;
+            }
+
             try {
                 const { data } = await apiClient.textSynthesize(
                     page.textContent,
@@ -112,7 +126,7 @@ const Book: NextPage<Props> = (props) => {
         if (book && page) {
             handleSynthesize(book.pages[page - 1]);
         }
-    }, [page]);
+    }, [book && book.id, page]);
 
     const [autoplay, setAutoplay] = useState(true);
     const handleAudioEnd = () => {
@@ -130,8 +144,8 @@ const Book: NextPage<Props> = (props) => {
             return console.log('newPage overflows book.numPages');
         }
 
-        setPage(newPage)
-    }
+        setPage(newPage);
+    };
 
     if (!book) {
         return null;
@@ -139,7 +153,7 @@ const Book: NextPage<Props> = (props) => {
 
     return (
         <div className={classes.root}>
-            <Player audioContent={audioContent} onAudioEnd={handleAudioEnd}/>
+            <Player audioContent={audioContent} onAudioEnd={handleAudioEnd} />
             <VoicesCombobox value={voice} onChange={setVoice} voices={voices} />
             <Box display="flex">
                 <FlexSpacer />
