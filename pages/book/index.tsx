@@ -23,7 +23,7 @@ const useStyles = makeStyles(
 
 const defaultVoice: Voice = {
     languageCodes: ['ru-RU'],
-    name: 'ru-RU-Standard-A',
+    name: 'ru-RU-Standard-C',
     ssmlGender: SsmlVoiceGender.FEMALE,
     naturalSampleRateHertz: 24000,
 };
