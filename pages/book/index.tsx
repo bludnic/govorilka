@@ -46,7 +46,7 @@ const Book: NextPage<Props> = (props) => {
     useEffect(() => {
         if (router.query.id) {
             // value is `undefined` on first render
-            router.push(
+            router.replace(
                 {
                     pathname: '/book',
                     query: router.query,
