@@ -86,7 +86,12 @@ const BookUpload: NextPage<Props> = () => {
     };
 
     return (
-        <NavigationLayout className={classes.root}>
+        <NavigationLayout
+            className={classes.root}
+            AppBarProps={{
+                title: 'Add new book',
+            }}
+        >
             <Card className={classes.Card}>
                 {book ? (
                     <BookDetails book={book} />

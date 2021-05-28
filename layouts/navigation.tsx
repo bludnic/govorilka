@@ -2,6 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { AppBar, AppBarProps } from 'components/AppBar';
 import { BottomNavigation } from 'components/BottomNavigation';
 
 const useStyles = makeStyles(
@@ -25,16 +26,25 @@ const useStyles = makeStyles(
 );
 
 export type NavigationLayoutProps = {
-    className?: string;
+    AppBarComponent?: FC<AppBarProps>;
+    AppBarProps?: AppBarProps;
     children: ReactNode;
+    className?: string;
 };
 
 export const NavigationLayout: FC<NavigationLayoutProps> = (props) => {
-    const { className, children } = props;
+    const {
+        AppBarComponent = AppBar,
+        AppBarProps,
+        children,
+        className,
+    } = props;
     const classes = useStyles();
 
     return (
         <div className={clsx(classes.root, className)}>
+            <AppBarComponent {...AppBarProps} />
+
             <div className={classes.container}>{children}</div>
 
             <BottomNavigation className={classes.BottomNavigation} />

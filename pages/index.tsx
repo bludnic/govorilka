@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import { NextPage } from 'next';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
@@ -41,10 +40,13 @@ const Index: NextPage<Props> = () => {
     };
 
     return (
-        <NavigationLayout className={classes.root}>
-            <List
-                subheader={<ListSubheader component="div">Books</ListSubheader>}
-            >
+        <NavigationLayout
+            className={classes.root}
+            AppBarProps={{
+                title: 'My books',
+            }}
+        >
+            <List>
                 {books.map((book) => (
                     <ListItem
                         onClick={() => openBook(book.id)}
