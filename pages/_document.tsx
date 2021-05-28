@@ -14,12 +14,41 @@ export default class MyDocument extends Document {
                         name="theme-color"
                         content={theme.palette.primary.main}
                     />
+                    <meta
+                        name="msapplication-TileColor"
+                        content={theme.palette.primary.main}
+                    />
+
+                    {/* Apple Touch Icon & favicons */}
+                    <link
+                        rel="apple-touch-icon"
+                        sizes="180x180"
+                        href="/static/icons/apple-touch-icon.png"
+                    />
+                    <link
+                        rel="icon"
+                        type="image/png"
+                        sizes="32x32"
+                        href="/static/icons/favicon-32x32.png"
+                    />
+                    <link
+                        rel="icon"
+                        type="image/png"
+                        sizes="16x16"
+                        href="/static/icons/favicon-16x16.png"
+                    />
+
+                    {/* Wep App Manifest & Browserconfig.xml */}
+                    <link rel="manifest" href="/static/manifest.json" />
+                    <meta
+                        name="msapplication-config"
+                        content="/static/browserconfig.xml"
+                    />
+
                     <link
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
                     />
-
-                    <link rel="manifest" href="/static/manifest.json" />
                 </Head>
                 <body>
                     <Main />
