@@ -3,11 +3,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { appWithTranslation, useTranslation } from 'next-i18next';
 
 import { theme } from 'theme/default';
 
-export default function App(props: AppProps) {
+function App(props: AppProps) {
     const { Component, pageProps } = props;
+    const { t } = useTranslation();
 
     useEffect(() => {
         // Remove the server-side injected CSS.
@@ -20,7 +22,7 @@ export default function App(props: AppProps) {
     return (
         <React.Fragment>
             <Head>
-                <title>Говорилка</title>
+                <title>{t('brandName')}</title>
                 <meta
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -34,3 +36,5 @@ export default function App(props: AppProps) {
         </React.Fragment>
     );
 }
+
+export default appWithTranslation(App);

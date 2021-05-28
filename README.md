@@ -11,3 +11,11 @@ $ cp .env.example .env
 $ npm install
 $ npm run dev
 ```
+
+# Localization
+
+You need to install [Localazy CLI](https://localazy.com/docs/cli/installation).
+
+```bash
+$ localazy upload # for uploading your strings to the Localazy platform
+$ localazy download # for downloading translation back to your app

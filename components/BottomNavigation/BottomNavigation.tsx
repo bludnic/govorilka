@@ -7,6 +7,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 const useStyles = makeStyles(
     () => ({
@@ -24,13 +25,14 @@ export const BottomNavigation: FC<BottomNavigationProps> = (props) => {
     const { className } = props;
     const classes = useStyles();
     const router = useRouter();
+    const { t } = useTranslation();
 
     return (
         <MuiBottomNavigation
             className={clsx(classes.root, className)}
             value={router.pathname}
             onChange={(event, newPathname: string) => {
-                router.push({
+                router.replace({
                     pathname: newPathname,
                 });
             }}
@@ -38,19 +40,19 @@ export const BottomNavigation: FC<BottomNavigationProps> = (props) => {
         >
             <MuiBottomNavigationAction
                 value="/"
-                label="My books"
+                label={t('myBooks')}
                 icon={<LibraryBooksIcon />}
             />
 
             <MuiBottomNavigationAction
                 value="/book-upload"
-                label="New book"
+                label={t('newBook')}
                 icon={<BookIcon />}
             />
 
             <MuiBottomNavigationAction
                 value="/settings"
-                label="Settings"
+                label={t('settings')}
                 icon={<SettingsIcon />}
             />
         </MuiBottomNavigation>

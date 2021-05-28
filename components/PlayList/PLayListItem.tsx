@@ -7,9 +7,10 @@ import {
     ListItemText,
     Tooltip,
 } from '@material-ui/core';
-import SurroundSoundOutlinedIcon from '@material-ui/icons/SurroundSoundOutlined';
-import PlayCircleOutlineOutlinedIcon from '@material-ui/icons/PlayCircleOutlineOutlined';
 import PauseCircleOutlineOutlinedIcon from '@material-ui/icons/PauseCircleOutlineOutlined';
+import PlayCircleOutlineOutlinedIcon from '@material-ui/icons/PlayCircleOutlineOutlined';
+import SurroundSoundOutlinedIcon from '@material-ui/icons/SurroundSoundOutlined';
+import { useTranslation } from 'next-i18next';
 
 import { PDFPage } from 'types';
 
@@ -30,6 +31,7 @@ type Props = {
 export const PLayListItem: FC<Props> = (props) => {
     const { page, onClick, selected } = props;
     const classes = useStyles();
+    const { t } = useTranslation();
 
     const handleClick = () => {
         onClick(page);
@@ -49,7 +51,8 @@ export const PLayListItem: FC<Props> = (props) => {
                     <PlayCircleOutlineOutlinedIcon />
                 )}
             </ListItemIcon>
-            <ListItemText primary={`Страница: ${page.pageNum}`} />
+
+            <ListItemText primary={`${t('pageNumber')}: ${page.pageNum}`} />
 
             <ListItemSecondaryAction>
                 {page.synthesizedAudio ? (

@@ -1,0 +1,17 @@
+{
+  "writeKey": "a8627389592499523100-75edc6a6a537080e1c98aaa34c52bb39d2d36cea894a6fc18b8af7b7789504a9",
+  "readKey": "a8627389592499523100-a81405eaeb2aaf12c5cb8510f45842451fd07390d9993af698ce8d6246269e10",
+
+  "upload": {
+    "type": "json",
+    "files": "public/locales/en/*.json",
+    "features": ["plural_i18next"]
+  },
+
+  "download": {
+    "files": "public/locales/${lang}/${file}",
+    "includeSourceLang": true
+  },
+
+  "transformations": []
+}

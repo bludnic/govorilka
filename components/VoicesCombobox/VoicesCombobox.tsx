@@ -1,8 +1,9 @@
 import React, { ChangeEvent, FC } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
 import ListItemText from '@material-ui/core/ListItemText';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'next-i18next';
 
 import { Voice } from 'util/apiClient';
 
@@ -23,6 +24,7 @@ type Props = {
 export const VoicesCombobox: FC<Props> = (props) => {
     const { voices, value, onChange } = props;
     const classes = useStyles();
+    const { t } = useTranslation();
 
     const handleChange = (e: ChangeEvent<{}>, value: Voice | null) => {
         onChange(value);
@@ -37,7 +39,7 @@ export const VoicesCombobox: FC<Props> = (props) => {
             getOptionLabel={(voice) => voice.name}
             getOptionSelected={(option, value) => option.name === value.name}
             renderInput={(params) => (
-                <TextField {...params} label="Voice" variant="outlined" />
+                <TextField {...params} label={t('voice')} variant="outlined" />
             )}
             renderOption={(option) => (
                 <ListItemText

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import { makeStyles } from '@material-ui/core/styles';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { BookDetails } from 'components/BookDetails';
 import { BookDetailsDialog } from 'components/BookDetailsDialog';
@@ -32,6 +34,8 @@ type Props = {};
 const BookUpload: NextPage<Props> = () => {
     const classes = useStyles();
     const router = useRouter();
+    const { t } = useTranslation();
+
     const [book, setBook] = useState<PDFBook | null>(null);
     const [bookDetailsDialog, setBookDetailsDialog] = useState(false);
     const [isConverting, setConverting] = useState(false);
@@ -89,7 +93,7 @@ const BookUpload: NextPage<Props> = () => {
         <NavigationLayout
             className={classes.root}
             AppBarProps={{
-                title: 'Add new book',
+                title: t('addNewBook'),
             }}
         >
             <Card className={classes.Card}>
@@ -112,6 +116,20 @@ const BookUpload: NextPage<Props> = () => {
             ) : null}
         </NavigationLayout>
     );
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+    const locale = context.locale || context.defaultLocale;
+
+    const translations = locale
+        ? await serverSideTranslations(locale, ['common'])
+        : null;
+
+    return {
+        props: {
+            ...translations,
+        },
+    };
 };
 
 export default BookUpload;

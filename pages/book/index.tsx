@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Box, FormControlLabel, Switch } from '@material-ui/core';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
+import { makeStyles } from '@material-ui/core/styles';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import apiClient, { SsmlVoiceGender, Voice } from 'util/apiClient';
 import { FlexSpacer } from 'components/FlexSpacer';
@@ -33,6 +35,7 @@ type Props = {};
 const Book: NextPage<Props> = (props) => {
     const classes = useStyles();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const [book, setBook] = useState<PDFBook | null>(null);
     useEffect(() => {
@@ -167,7 +170,7 @@ const Book: NextPage<Props> = (props) => {
                             inputProps={{ 'aria-label': 'Autoplay' }}
                         />
                     }
-                    label="Autoplay"
+                    label={t('autoplay')}
                 />
             </Box>
 
@@ -180,6 +183,20 @@ const Book: NextPage<Props> = (props) => {
             <LoadingOverlay loading={loadingSynthesize} />
         </div>
     );
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+    const locale = context.locale || context.defaultLocale;
+
+    const translations = locale
+        ? await serverSideTranslations(locale, ['common'])
+        : null;
+
+    return {
+        props: {
+            ...translations,
+        },
+    };
 };
 
 export default Book;

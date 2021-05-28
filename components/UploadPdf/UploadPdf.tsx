@@ -1,8 +1,9 @@
 import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
 import BookIcon from '@material-ui/icons/Book';
 import Button from '@material-ui/core/Button';
-import CircularProgress  from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'next-i18next';
 
 import { fileToBase64 } from 'util/file/fileToBase64';
 
@@ -24,6 +25,8 @@ type Props = {
 export const UploadPdf: FC<Props> = (props) => {
     const { onUpload } = props;
     const classes = useStyles();
+    const { t } = useTranslation();
+
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setUploading] = useState(false);
@@ -79,7 +82,7 @@ export const UploadPdf: FC<Props> = (props) => {
                 startIcon={<BookIcon />}
                 endIcon={isUploading ? <CircularProgress size={16} /> : null}
             >
-                Выбрать книгу
+                {t('selectBook')}
             </Button>
         </div>
     );

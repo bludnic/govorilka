@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import { makeStyles } from '@material-ui/core/styles';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { NavigationLayout } from 'layouts/navigation';
 import { PDFBook } from 'types';
@@ -23,6 +25,7 @@ type Props = {};
 const Index: NextPage<Props> = () => {
     const classes = useStyles();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const [books, setBooks] = useState<PDFBook[]>([]);
 
@@ -43,7 +46,7 @@ const Index: NextPage<Props> = () => {
         <NavigationLayout
             className={classes.root}
             AppBarProps={{
-                title: 'My books',
+                title: t('myBooks'),
             }}
         >
             <List>
@@ -62,6 +65,20 @@ const Index: NextPage<Props> = () => {
             </List>
         </NavigationLayout>
     );
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+    const locale = context.locale || context.defaultLocale;
+
+    const translations = locale
+        ? await serverSideTranslations(locale, ['common'])
+        : null;
+
+    return {
+        props: {
+            ...translations,
+        },
+    };
 };
 
 export default Index;
