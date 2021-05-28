@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import BookIcon from '@material-ui/icons/Book';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,6 +7,7 @@ import { NextPage } from 'next';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
 
+import { NavigationLayout } from 'layouts/navigation';
 import { PDFBook } from 'types';
 import { getAllBooks } from 'util/indexedDB/books';
 
@@ -22,7 +21,7 @@ const useStyles = makeStyles(
 
 type Props = {};
 
-const Index: NextPage<Props> = (props) => {
+const Index: NextPage<Props> = () => {
     const classes = useStyles();
     const router = useRouter();
 
@@ -42,13 +41,9 @@ const Index: NextPage<Props> = (props) => {
     };
 
     return (
-        <div className={classes.root}>
+        <NavigationLayout className={classes.root}>
             <List
-                subheader={
-                    <ListSubheader component="div">
-                        Books
-                    </ListSubheader>
-                }
+                subheader={<ListSubheader component="div">Books</ListSubheader>}
             >
                 {books.map((book) => (
                     <ListItem
@@ -61,17 +56,9 @@ const Index: NextPage<Props> = (props) => {
                             secondary={book.id}
                         />
                     </ListItem>
-                ))}{' '}
+                ))}
             </List>
-
-            <Button
-                onClick={() => router.push('/book-upload')}
-                startIcon={<BookIcon />}
-                fullWidth
-            >
-                Upload Book
-            </Button>
-        </div>
+        </NavigationLayout>
     );
 };
 

@@ -7,13 +7,14 @@ import { useRouter } from 'next/router';
 import { BookDetails } from 'components/BookDetails';
 import { BookDetailsDialog } from 'components/BookDetailsDialog';
 import { LoadingOverlay } from 'components/LoadingOverlay';
+import { NavigationLayout } from 'layouts/navigation';
 import { PDFBook } from 'types';
 import { UploadPdf } from 'components/UploadPdf';
-import { convertPdfBase64ToBook } from 'util/pdf';
 import { addBook } from 'util/indexedDB/books';
+import { convertPdfBase64ToBook } from 'util/pdf';
 
 const useStyles = makeStyles(
-    (theme) => ({
+    () => ({
         /* Styles applied to the root element. */
         root: {},
         Card: {
@@ -85,7 +86,7 @@ const BookUpload: NextPage<Props> = () => {
     };
 
     return (
-        <div className={classes.root}>
+        <NavigationLayout className={classes.root}>
             <Card className={classes.Card}>
                 {book ? (
                     <BookDetails book={book} />
@@ -104,7 +105,7 @@ const BookUpload: NextPage<Props> = () => {
                     book={book}
                 />
             ) : null}
-        </div>
+        </NavigationLayout>
     );
 };
 
