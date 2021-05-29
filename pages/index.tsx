@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import CircularProgress  from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -13,9 +14,14 @@ import { PDFBook } from 'types';
 import { getAllBooks } from 'util/indexedDB/books';
 
 const useStyles = makeStyles(
-    () => ({
+    (theme) => ({
         /* Styles applied to the root element. */
         root: {},
+        /* Styles applied to the `div` container of <CircularProgress /> component. */
+        circularProgressContainer: {
+            textAlign: 'center',
+            paddingTop: theme.spacing(4),
+        },
     }),
     { name: 'Index' },
 );
@@ -28,9 +34,17 @@ const Index: NextPage<Props> = () => {
     const { t } = useTranslation();
 
     const [books, setBooks] = useState<PDFBook[]>([]);
+    const [loadingBooks, setLoadingBooks] = useState(false);
+    const [booksFetched, setBooksFetched] = useState(false);
 
     useEffect(() => {
-        getAllBooks().then((books) => setBooks(books));
+        setLoadingBooks(true);
+        getAllBooks()
+            .then((books) => setBooks(books))
+            .finally(() => {
+                setLoadingBooks(false);
+                setBooksFetched(true);
+            });
     }, []);
 
     const openBook = (bookId: number) => {
@@ -49,20 +63,26 @@ const Index: NextPage<Props> = () => {
                 title: t('myBooks'),
             }}
         >
-            <List>
-                {books.map((book) => (
-                    <ListItem
-                        onClick={() => openBook(book.id)}
-                        key={book.id}
-                        button
-                    >
-                        <ListItemText
-                            primary={book.title}
-                            secondary={book.id}
-                        />
-                    </ListItem>
-                ))}
-            </List>
+            {loadingBooks ? (
+                <div className={classes.circularProgressContainer}>
+                    <CircularProgress variant="indeterminate" />
+                </div>
+            ) : booksFetched ? (
+                <List>
+                    {books.map((book) => (
+                        <ListItem
+                            onClick={() => openBook(book.id)}
+                            key={book.id}
+                            button
+                        >
+                            <ListItemText
+                                primary={book.title}
+                                secondary={book.id}
+                            />
+                        </ListItem>
+                    ))}
+                </List>
+            ) : null}
         </NavigationLayout>
     );
 };
