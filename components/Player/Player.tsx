@@ -1,4 +1,5 @@
 import React, { AudioHTMLAttributes, FC, useEffect, useRef } from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(
@@ -13,13 +14,14 @@ const useStyles = makeStyles(
 );
 
 type Props = {
+    className?: string;
     audioContent: string; // data:audio/mpeg;base64
     audioProps?: AudioHTMLAttributes<HTMLAudioElement>;
     onAudioEnd?: () => void;
 };
 
 export const Player: FC<Props> = (props) => {
-    const { audioContent, audioProps, onAudioEnd } = props;
+    const { audioContent, audioProps, onAudioEnd, className } = props;
     const classes = useStyles();
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -34,7 +36,7 @@ export const Player: FC<Props> = (props) => {
     }, [audioContent]);
 
     return (
-        <div className={classes.root}>
+        <div className={clsx(classes.root, className)}>
             <audio
                 ref={audioRef}
                 controls={true}

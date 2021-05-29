@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC } from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'next-i18next';
 
@@ -16,13 +17,14 @@ const useStyles = makeStyles(
 );
 
 type Props = {
+    className?: string;
     value: Voice | null;
     onChange: (voice: Voice | null) => void;
     voices: Voice[];
 };
 
 export const VoicesCombobox: FC<Props> = (props) => {
-    const { voices, value, onChange } = props;
+    const { className, voices, value, onChange } = props;
     const classes = useStyles();
     const { t } = useTranslation();
 
@@ -34,7 +36,7 @@ export const VoicesCombobox: FC<Props> = (props) => {
         <Autocomplete<Voice>
             value={value}
             onChange={handleChange}
-            className={classes.root}
+            className={clsx(classes.root, className)}
             options={voices}
             getOptionLabel={(voice) => voice.name}
             getOptionSelected={(option, value) => option.name === value.name}
