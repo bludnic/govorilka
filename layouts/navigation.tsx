@@ -30,6 +30,7 @@ export type NavigationLayoutProps = {
     AppBarProps?: AppBarProps;
     children: ReactNode;
     className?: string;
+    disableBottomNavigation?: boolean;
 };
 
 export const NavigationLayout: FC<NavigationLayoutProps> = (props) => {
@@ -38,6 +39,7 @@ export const NavigationLayout: FC<NavigationLayoutProps> = (props) => {
         AppBarProps,
         children,
         className,
+        disableBottomNavigation,
     } = props;
     const classes = useStyles();
 
@@ -47,7 +49,9 @@ export const NavigationLayout: FC<NavigationLayoutProps> = (props) => {
 
             <div className={classes.container}>{children}</div>
 
-            <BottomNavigation className={classes.BottomNavigation} />
+            {!disableBottomNavigation ? (
+                <BottomNavigation className={classes.BottomNavigation} />
+            ) : null}
         </div>
     );
 };
