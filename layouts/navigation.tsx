@@ -10,7 +10,9 @@ const useStyles = makeStyles(
         /* Styles applied to the root element. */
         root: {},
         /* Styles applied to the container `div` element in which the children prop is placed. */
-        container: {
+        container: {},
+        /* Styles applied to the container when the `BottomNavigation` is shown. */
+        containerWithBottomNavigation: {
             // The <BottomNavigation /> must not overlap the contents of the container
             paddingBottom: 56, // BottomNavigation height
         },
@@ -47,7 +49,13 @@ export const NavigationLayout: FC<NavigationLayoutProps> = (props) => {
         <div className={clsx(classes.root, className)}>
             <AppBarComponent {...AppBarProps} />
 
-            <div className={classes.container}>{children}</div>
+            <div
+                className={clsx(classes.container, {
+                    [classes.containerWithBottomNavigation]: !disableBottomNavigation,
+                })}
+            >
+                {children}
+            </div>
 
             {!disableBottomNavigation ? (
                 <BottomNavigation className={classes.BottomNavigation} />
