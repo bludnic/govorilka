@@ -10,7 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import {
     PlayerProgressBar,
-    playerProgressBarHeight,
+    playerProgressBarPaddingY,
+    playerProgressBarRailHeight,
 } from './PlayerProgressBar';
 import { FlexSpacer } from 'components/FlexSpacer';
 import { secondsToDuration } from 'util/datetime';
@@ -33,7 +34,7 @@ const useStyles = makeStyles(
         /* Styles applied to the `PlayerProgressBar` component. */
         PlayerProgressBar: {
             position: 'absolute',
-            top: -playerProgressBarHeight / 2,
+            top: -playerProgressBarPaddingY - playerProgressBarRailHeight,
         },
         /* Styles applied to the left controls `div` element. */
         leftControls: {

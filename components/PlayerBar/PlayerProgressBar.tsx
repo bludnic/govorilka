@@ -3,12 +3,24 @@ import Slider from '@material-ui/core/Slider';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
-export const playerProgressBarHeight = 28;
+export const playerProgressBarPaddingY = 20;
+export const playerProgressBarRailHeight = 2;
+export const playerProgressBarHeight =
+    playerProgressBarPaddingY * 2 + playerProgressBarRailHeight;
 
 const useStyles = makeStyles(
     () => ({
         /* Styles applied to the root element. */
-        root: {},
+        root: {
+            height: playerProgressBarRailHeight,
+            padding: `${playerProgressBarPaddingY}px 0`,
+        },
+        rail: {
+            height: playerProgressBarRailHeight,
+        },
+        track: {
+            height: playerProgressBarRailHeight,
+        },
     }),
     { name: 'PlayerProgressBar' },
 );
@@ -48,6 +60,7 @@ export const PlayerProgressBar: FC<PlayerProgressBarProps> = (props) => {
     return (
         <Slider
             className={clsx(classes.root, className)}
+            classes={{ rail: classes.rail, track: classes.track }}
             value={value}
             onChange={handleChange}
         />
