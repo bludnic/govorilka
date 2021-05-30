@@ -39,7 +39,7 @@ const useStyles = makeStyles(
         },
         /* Styles applied to the `VoiceCombobox` component. */
         VoicesCombobox: {
-            marginTop: theme.spacing(1),
+            marginTop: theme.spacing(2),
             marginLeft: theme.spacing(1),
             marginRight: theme.spacing(1),
         },

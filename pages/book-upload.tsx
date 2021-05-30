@@ -16,7 +16,7 @@ import { addBook } from 'util/indexedDB/books';
 import { convertPdfBase64ToBook } from 'util/pdf';
 
 const useStyles = makeStyles(
-    () => ({
+    (theme) => ({
         /* Styles applied to the root element. */
         root: {},
         Card: {
@@ -24,6 +24,7 @@ const useStyles = makeStyles(
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-around',
+            marginTop: theme.spacing(4),
         },
     }),
     { name: 'BookUpload' },
@@ -96,7 +97,7 @@ const BookUpload: NextPage<Props> = () => {
                 title: t('addNewBook'),
             }}
         >
-            <Card className={classes.Card}>
+            <Card className={classes.Card} elevation={0}>
                 {book ? (
                     <BookDetails book={book} />
                 ) : (

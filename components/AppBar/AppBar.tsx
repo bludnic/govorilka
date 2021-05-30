@@ -28,7 +28,11 @@ export const AppBar: FC<AppBarProps> = (props) => {
     const classes = useStyles();
 
     return (
-        <MuiAppBar className={clsx(classes.root, className)} position="static">
+        <MuiAppBar
+            className={clsx(classes.root, className)}
+            position="static"
+            color="transparent"
+        >
             <Toolbar>
                 <Typography variant="h6" className={classes.title}>
                     {title}

@@ -22,7 +22,7 @@ const useStyles = makeStyles(
         /* Styles applied to the root element. */
         root: {
             height: playerBarHeight,
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: theme.palette.background.paper,
             position: 'relative',
         },
         /* Styles applied to the container `div` element. */

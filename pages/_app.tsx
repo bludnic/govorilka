@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Head from 'next/head';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { AppProps } from 'next/app';
-import { ThemeProvider } from '@material-ui/core/styles';
 import { appWithTranslation, useTranslation } from 'next-i18next';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
-import { theme } from 'theme/default';
+import { darkTheme, lightTheme } from 'theme';
 
 function App(props: AppProps) {
     const { Component, pageProps } = props;
@@ -18,6 +19,12 @@ function App(props: AppProps) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
     }, []);
+
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const theme = React.useMemo(
+        () => createMuiTheme(prefersDarkMode ? darkTheme : lightTheme),
+        [prefersDarkMode],
+    );
 
     return (
         <React.Fragment>

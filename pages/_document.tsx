@@ -2,7 +2,7 @@ import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 
-import { theme } from 'theme/default';
+import { lightTheme } from 'theme';
 
 export default class MyDocument extends Document {
     render() {
@@ -12,11 +12,11 @@ export default class MyDocument extends Document {
                     {/* PWA primary color */}
                     <meta
                         name="theme-color"
-                        content={theme.palette.primary.main}
+                        content={lightTheme.palette.primary.main}
                     />
                     <meta
                         name="msapplication-TileColor"
-                        content={theme.palette.primary.main}
+                        content={lightTheme.palette.primary.main}
                     />
 
                     {/* Apple Touch Icon & favicons */}
