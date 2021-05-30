@@ -14,22 +14,28 @@ import { LoadingOverlay } from 'components/LoadingOverlay';
 import { NavigationLayout } from 'layouts/navigation';
 import { PDFBook, PDFPage } from 'types';
 import { PlayList } from 'components/PlayList';
-import { Player } from 'components/Player';
+import { PlayerBar, playerBarHeight } from 'components/PlayerBar';
 import { VoicesCombobox } from 'components/VoicesCombobox';
 import { getBook } from 'util/indexedDB/books';
 
 const useStyles = makeStyles(
     (theme) => ({
         /* Styles applied to the root element. */
-        root: {},
+        root: {
+            paddingBottom: playerBarHeight,
+        },
         /* Styles applied to the `div` container of <CircularProgress /> component. */
         circularProgressContainer: {
             textAlign: 'center',
             paddingTop: theme.spacing(4),
         },
-        /* Styles applied to the `Player` component. */
-        Player: {
-            marginTop: theme.spacing(2),
+        /* Styles applied to the `PlayerBar` component. */
+        PlayerBar: {
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: theme.zIndex.appBar,
         },
         /* Styles applied to the `VoiceCombobox` component. */
         VoicesCombobox: {
@@ -138,7 +144,7 @@ const Book: NextPage<Props> = (props) => {
                         'because of empty `page.textContent`. Perhaps this is the cover of the page, ' +
                         'which does not contain text, or pdf.js did not parse the text correctly.',
                 );
-                handleAudioEnd();
+                handleAudioEnded();
 
                 return;
             }
@@ -169,12 +175,42 @@ const Book: NextPage<Props> = (props) => {
     }, [book && book.id, page]);
 
     const [autoplay, setAutoplay] = useState(true);
-    const handleAudioEnd = () => {
+    const handleAudioEnded = () => {
         if (!book) {
-            console.warn('handleAudioEnd: book is not defined');
+            console.warn('handleAudioEnded: book is not defined');
             return;
         }
         if (!autoplay) {
+            return;
+        }
+
+        const newPage = page + 1;
+
+        if (newPage > book.numPages) {
+            return console.log('newPage overflows book.numPages');
+        }
+
+        setPage(newPage);
+    };
+
+    const handleSkipPrevious = () => {
+        if (!book) {
+            console.warn('handleSkipPrevious: book is not defined');
+            return;
+        }
+
+        const newPage = page - 1;
+
+        if (newPage < 1) {
+            return console.log('newPage can not be 0');
+        }
+
+        setPage(newPage);
+    };
+
+    const handleSkipNext = () => {
+        if (!book) {
+            console.warn('handleSkipNext: book is not defined');
             return;
         }
 
@@ -205,10 +241,12 @@ const Book: NextPage<Props> = (props) => {
             }}
             disableBottomNavigation
         >
-            <Player
-                className={classes.Player}
+            <PlayerBar
+                className={classes.PlayerBar}
                 audioContent={audioContent}
-                onAudioEnd={handleAudioEnd}
+                onSkipPrevious={handleSkipPrevious}
+                onSkipNext={handleSkipNext}
+                onAudioEnded={handleAudioEnded}
             />
 
             <VoicesCombobox
