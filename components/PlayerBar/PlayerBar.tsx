@@ -362,7 +362,7 @@ export const PlayerBar: FC<PlayerBarProps> = (props) => {
         }
 
         setIsPlaying(false); // reset pause button
-    }, [audio]);
+    }, [audio, onAudioEnded]);
     useEffect(() => {
         audio.addEventListener('ended', onEnded);
 
