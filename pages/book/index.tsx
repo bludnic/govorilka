@@ -59,7 +59,7 @@ const useStyles = makeStyles(
 
 const defaultVoice: Voice = {
     languageCodes: ['ru-RU'],
-    name: 'ru-RU-Standard-C',
+    name: 'ru-RU-Wavenet-C',
     ssmlGender: SsmlVoiceGender.FEMALE,
     naturalSampleRateHertz: 24000,
 };
