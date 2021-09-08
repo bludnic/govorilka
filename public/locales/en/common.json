@@ -12,8 +12,11 @@
   "page_plural": "pages",
   "pageNumber": "Page",
   "pages": "Pages",
+  "profile": "Profile",
   "russian": "Русский",
   "selectBook": "Select book",
   "settings": "Settings",
+  "signIn": "Sign In",
+  "signOut": "Sign Out",
   "voice": "Voice"
 }

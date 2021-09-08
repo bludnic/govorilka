@@ -43,3 +43,6 @@ public/workbox-*.js.map
 # i18n
 /public/locales/*
 !/public/locales/en
+
+# google
+service-account.json

@@ -5,11 +5,19 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { AppProps } from 'next/app';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 
 import { darkTheme, lightTheme } from 'theme';
+import { firebaseInit } from 'store/user';
+import { initFirebase } from 'util/auth';
+import { wrapper } from 'store';
+
+// Init the Firebase app.
+initFirebase();
 
 function App(props: AppProps) {
     const { Component, pageProps } = props;
+    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -25,6 +33,10 @@ function App(props: AppProps) {
         () => createMuiTheme(prefersDarkMode ? darkTheme : lightTheme),
         [prefersDarkMode],
     );
+
+    useEffect(() => {
+        dispatch(firebaseInit());
+    }, []);
 
     return (
         <React.Fragment>
@@ -44,4 +56,4 @@ function App(props: AppProps) {
     );
 }
 
-export default appWithTranslation(App);
+export default wrapper.withRedux(appWithTranslation(App));
