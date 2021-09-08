@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CircularProgress  from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import { NavigationLayout } from 'layouts/navigation';
+import { NoBooksPlaceholder } from 'components/NoBooksPlaceholder';
 import { PDFBook } from 'types';
 import { getAllBooks } from 'util/indexedDB/books';
 
@@ -22,6 +23,10 @@ const useStyles = makeStyles(
             textAlign: 'center',
             paddingTop: theme.spacing(4),
         },
+        /* Styles applied to the `div` container of <CircularProgress /> component. */
+        NoBooksPlaceholder: {
+            marginTop: theme.spacing(4)
+        }
     }),
     { name: 'Index' },
 );
@@ -68,20 +73,24 @@ const Index: NextPage<Props> = () => {
                     <CircularProgress variant="indeterminate" />
                 </div>
             ) : booksFetched ? (
-                <List>
-                    {books.map((book) => (
-                        <ListItem
-                            onClick={() => openBook(book.id)}
-                            key={book.id}
-                            button
-                        >
-                            <ListItemText
-                                primary={book.title}
-                                secondary={book.id}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
+                books.length > 0 ? (
+                    <List>
+                        {books.map((book) => (
+                            <ListItem
+                                onClick={() => openBook(book.id)}
+                                key={book.id}
+                                button
+                            >
+                                <ListItemText
+                                    primary={book.title}
+                                    secondary={book.id}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                ) : (
+                    <NoBooksPlaceholder className={classes.NoBooksPlaceholder} />
+                )
             ) : null}
         </NavigationLayout>
     );

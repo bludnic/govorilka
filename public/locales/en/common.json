@@ -1,4 +1,5 @@
 {
+  "addBook": "Add a book",
   "addNewBook": "Add new book",
   "autoplay": "Autoplay",
   "bookName": "Book name",
@@ -7,6 +8,7 @@
   "language": "Language",
   "myBooks": "My books",
   "newBook": "New book",
+  "noBooksPlaceholder": "You don't have any books yet",
   "ok": "Ok",
   "page": "page",
   "page_plural": "pages",
