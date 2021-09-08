@@ -6,8 +6,11 @@ import firebaseConfig from 'firebase.config.json';
 // prevent app duplication on hot reload
 if (admin.apps.length === 0) {
     admin.initializeApp({
-        credential: admin.credential.applicationDefault(),
-        projectId: firebaseConfig.projectId,
+        credential: admin.credential.cert({
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_PRIVATE_KEY,
+            projectId: firebaseConfig.projectId,
+        }),
     });
 }
 
