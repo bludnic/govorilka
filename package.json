@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "bootstrap": "npm i && localazy download",
-    "build": "next build",
+    "build": "npx @localazy/cli download && next build",
     "start": "next start",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "typecheck": "tsc"
