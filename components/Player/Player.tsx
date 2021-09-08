@@ -29,7 +29,6 @@ export const Player: FC<Props> = (props) => {
         const { current: audio } = audioRef;
 
         if (audio) {
-            console.log('load and play', audioContent);
             audio.load();
             audio.play();
         }
