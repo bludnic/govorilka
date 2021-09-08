@@ -4,6 +4,11 @@
 2. Go to [Credentials](https://console.cloud.google.com/apis/credentials) page and `[CREATE CREDENTIALS] -> API key`
 3. Replace API key in `.env`
 
+# Configuration
+
+1. Create a Firebase project. Go to `Project settings -> General` and add a new Web App. Replace [firebase.config.json](firebase.config.json) with your configuration.
+2. Create a Service Account in `Project settings -> Service accounts` and copy it to `service-account.json` in the root directory.
+
 # Development
 
 ```bash
