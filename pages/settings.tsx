@@ -6,6 +6,8 @@ import { useTranslation } from 'next-i18next';
 
 import { LanguageSwitcher } from 'components/LanguageSwitcher';
 import { NavigationLayout } from 'layouts/navigation';
+import {Button} from '@material-ui/core';
+import {useRouter} from 'next/router';
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -29,6 +31,7 @@ type Props = {};
 
 const Settings: NextPage<Props> = (props) => {
     const classes = useStyles();
+    const router = useRouter();
     const { t } = useTranslation();
 
     return (
@@ -40,6 +43,8 @@ const Settings: NextPage<Props> = (props) => {
         >
             <div className={classes.container}>
                 <LanguageSwitcher className={classes.LanguageSwitcher} />
+
+                <Button onClick={() => router.push('/media-session')}>Media Session API</Button>
             </div>
         </NavigationLayout>
     );
